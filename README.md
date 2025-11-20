@@ -1,216 +1,180 @@
-# Advanced-Time-Series-Forecasting-with-Neural-ODEs-and-uncertainty-Quantification
+🚀 Advanced Time Series Forecasting with Neural ODEs and Uncertainty Quantification
+Project Type: Deep Learning, Neural ODEs, Time Series Forecasting, Uncertainty Quantification
+Author: Your Name
+Dataset: Programmatically Generated Multivariate Nonlinear Time Series (5000 observations)
+Frameworks: PyTorch, Torchdiffeq, TensorFlow Probability (optional), NumPy, Pandas, Scikit-Learn
+📘 Project Overview
 
-README — Advanced Time Series Forecasting with Deep Learning (LSTM Optimization & Interpretability)
+This project explores next-generation time series forecasting using Neural Ordinary Differential Equations (Neural ODEs), moving beyond traditional recurrent neural networks like LSTMs. Neural ODEs treat hidden states as continuously evolving differential equations, making them powerful for modeling highly non-linear, irregular, or chaotic systems.
 
-Project Type: Deep Learning, Time Series Forecasting, Model Optimization, Interpretability Author: Your Name Dataset: Programmatically Generated Multivariate Time Series (2000 observations) Frameworks: PyTorch, Statsmodels, Scikit-Learn, NumPy, Pandas
+The workflow includes:
 
-Project Overview
-This project focuses on building a fully optimized and interpretable LSTM-based deep learning model for multivariate time series forecasting. The workflow covers:
+✔ Programmatic generation of a complex, nonlinear, 5-variable multivariate time series
+✔ Building a complete Neural ODE forecasting model using ODE solvers (Runge-Kutta)
+✔ Implementing uncertainty quantification via:
 
-Generating a complex synthetic economic-like dataset with trend, noise, seasonal cycles, autoregressive dependencies, and multiple exogenous variables.
+Monte Carlo Dropout
 
-Designing and training an advanced LSTM architecture that incorporates:
+Bayesian Neural ODE techniques
+✔ Benchmarking against traditional baselines:
 
-AdamW optimizer
+SARIMAX
 
-Cosine annealing learning rate scheduler
+Deep LSTM model
+✔ Evaluating uncertainty coverage and forecast reliability
 
-Dropout scheduling (dynamic dropout increase during training)
+This project demonstrates state-of-the-art modeling capability for forecasting real-world engineering, physics, finance, and IoT sensor data exhibiting nonlinear dynamics.
 
-Weight decay
+📊 Dataset Description
+1. Programmatic Dataset Generation
 
-Benchmarking against baseline forecasting models:
+A synthetic multivariate nonlinear system was created using coupled chaotic ODEs and nonlinear oscillators, with:
 
-SARIMA (Seasonal ARIMA)
+5000 time steps
 
-Feedforward Neural Network (FFNN) with flattened lag features
+5 interacting variables
 
-Conducting interpretability analysis using permutation-based feature importance for sequence models.
+Chaotic behavior & nonlinear coupling
 
-The final deliverables include dataset, code, metrics, and interpretability reports.
+Suitable for Neural ODE forecasting tasks
 
-Dataset Description 2.1 Data Generation
-The dataset is programmatically generated using:
+Variables Included
+Variable	Description
+x1	Nonlinear oscillator component (position)
+x2	Velocity component (coupled with x1)
+x3	Chaotic Lorenz-like dimension 1
+x4	Chaotic Lorenz-like dimension 2
+x5	Chaotic Lorenz-like dimension 3
+Dataset File
 
-Daily timestamps for 2000 days
+📁 synthetic_multivariate_timeseries.csv
 
-Components such as:
+🎯 Problem Statement
 
-Long-term trend
+Design a forecasting model that:
 
-Yearly seasonal pattern
+Learns complex, continuous-time nonlinear dynamics
 
-Weekly seasonal pattern
+Outperforms discrete-time RNN models
 
-Autoregressive signals (AR(2))
+Produces uncertainty-aware predictions
 
-Exogenous variables (exog1, exog2, exog3)
+Provides reliable confidence intervals (e.g., 90% prediction intervals)
 
-Gaussian noise
+🧠 Methodology
+1. Data Preprocessing
 
-2.2 Features Included Feature Description target Main variable to be forecasted exog1 Seasonal exogenous driver (90-day cycle) exog2 Faster exogenous cycle (30-day cosine) exog3 Random noise-driven exogenous variable trend Linear upward trend seasonal_yearly Long periodic component seasonal_weekly Weekly periodic component lag_1 ... lag_14 Lagged historical observations
+Standardization using StandardScaler
 
-Minimum observations: 2000 rows Saved file: lstm_timeseries_dataset.csv
+Time-series windowing (sequence lengths 20–50)
 
-Problem Statement
-To build a high-performance forecasting model capable of learning long-sequence temporal patterns while maintaining interpretability.
+Train–Val–Test split:
 
-Key objectives:
+70% training
 
-Predict future values of a non-stationary, seasonal time series.
+10% validation
 
-Compare deep learning with classical models.
+20% testing
 
-Understand which features influence the forecast using explainable AI (XAI) methods.
+🔬 Model Architectures
+1. Neural ODE (Primary Model)
 
-Methodology & Approach 4.1 Data Preprocessing
-Normalization using StandardScaler.
+Built using torchdiffeq (Neural ODE framework).
 
-Creation of sequence windows with sequence length = 30.
+Components:
 
-Time-based train-validation-test split:
+✔ Neural ODE Block
 
-70% Train
+Learns dH/dt differential equation of hidden state
 
-10% Validation
+Uses ODE solvers (e.g., RK4, dopri5)
 
-20% Test
+✔ ODE Solver Integration
 
-Model Architectures 5.1 LSTM Forecasting Model (Primary Model)
-Key features:
+Converts continuous dynamics into forecasts
 
-2-layer LSTM architecture
+✔ Monte Carlo Dropout (for uncertainty)
 
-Hidden size = 128
+✔ Bayesian Neural Layers (optional)
 
-Dropout applied to:
+TensorFlow Probability / Pyro-based sampling
 
-LSTM layers
+2. Baseline Models
+a) LSTM Model
 
-Fully-connected layers
+2 layers
 
-Final prediction layer: Dense(64 → 1)
+128 hidden units
 
-5.2 Advanced Optimization Techniques AdamW Optimizer
+Dropout regularization
 
-Decoupled weight decay
+Adam optimizer
 
-More stable and generalizable than Adam
+b) SARIMAX
 
-Cosine Annealing LR Scheduler
+Seasonal + exogenous components
 
-Smoothly decreases learning rate across training epochs.
+Used as classical forecasting benchmark
 
-Dropout Scheduling
+📈 Uncertainty Quantification
+Techniques Used
+1. Monte Carlo Dropout
 
-A custom function increases dropout probability as training progresses:
+Dropout applied at inference
 
-initial_dropout = 0.1 final_dropout = 0.5
+Multiple forward passes → prediction distribution
 
-This helps:
+Produces:
 
-Prevent overfitting
+Mean forecasts
 
-Encourage more robust temporal pattern learning
+Confidence intervals
 
-Baseline Models 6.1 SARIMA
-Captures seasonal components
+2. Bayesian Neural ODE (advanced option)
 
-Implemented using Statsmodels
+Latent variable sampling
 
-Used as classical statistical benchmark
+Captures true epistemic uncertainty
 
-6.2 Feedforward Neural Network (FFNN)
+📏 Evaluation Metrics
+Point Forecast Metrics
 
-Uses flattened lag features
+RMSE
 
-Non-sequential model
+MAE
 
-Helps compare how sequence models outperform simple networks
+MAPE
 
-Evaluation Metrics
-Models are evaluated using:
+Uncertainty Metrics
 
-RMSE (Root Mean Squared Error)
+Prediction Interval Coverage Probability (PICP)
 
-MAE (Mean Absolute Error)
+Mean Interval Width (MIW)
 
-MAPE (%)
+Sharpness & Calibration diagnostics
 
-These metrics allow fair comparison between models with different assumptions.
+📊 Interpretability & Analysis
 
-Interpretability Analysis 8.1 Permutation Importance (Sequence-Specific)
-Each feature is permuted across test sequences while maintaining temporal order.
+Even though Neural ODEs are continuous-time deep models, interpretability is performed using:
 
-Interpretation:
+✔ Sensitivity analysis
+✔ Perturbation-based feature importance
+✔ Visualization of learned differential dynamics
 
-Increase in RMSE = feature importance
+Plots include:
 
-Higher RMSE change → More crucial feature
+Learned phase portrait
 
-This helps identify:
+Hidden state trajectory
 
-Which exogenous variables matter
+Forecast distributions
 
-Whether lags or seasonality components dominate prediction
+🧪 Results Summary
 
-How the LSTM internally relies on temporal dependencies
+Expected Findings:
 
-Results Summary (Typical Observations)
-Expected behavior:
-
-LSTM performs significantly better than FFNN and SARIMA due to sequence modeling ability.
-
-Exog variables and lag features show strong importance in permutation tests.
-
-SARIMA may struggle due to nonlinearities and noise.
-
-FFNN performs reasonably but cannot model long temporal patterns.
-
-Computational Resources
-Typical requirements:
-
-CPU: 4–8 cores
-
-RAM: 4–8 GB minimum
-
-GPU (optional but recommended): RTX 1650 or better
-
-Training times:
-
-CPU-only: 10–20 minutes
-
-GPU: 3–8 minutes
-
-File Structure Project/ │ ├── Advanced_LSTM_Forecasting_Project.py # Full project code ├── lstm_timeseries_dataset.csv # Auto-generated dataset ├── README.md # Project documentation └── /outputs (optional)
-
-How to Run the Project Step 1: Install dependencies pip install numpy pandas matplotlib scikit-learn torch statsmodels
-
-Step 2: Run the script python Advanced_LSTM_Forecasting_Project.py
-
-Step 3: Outputs
-
-The script will display:
-
-LSTM performance metrics
-
-Baseline model metrics
-
-Feature importances
-
-Dataset saved to CSV
-
-Conclusion
-This project demonstrates a full end-to-end implementation of:
-
-Time series data simulation
-
-Deep learning sequence modeling
-
-Model optimization
-
-Statistical baselines
-
-Modern interpretability techniques
-
-It serves as a strong final-year, research, or professional portfolio project showcasing advanced machine learning and deep learning skills.# Advanced-Time-Series-Forecasting-with-Deep-Learning-LSTM-Optimization-and-Interpretability
+✔ Neural ODE captures nonlinear continuous dynamics better than LSTM
+✔ Produces smoother and more stable forecasts
+✔ Uncertainty intervals are well-calibrated with MC-Dropout
+✔ LSTM performs well but struggles with chaotic trajectories
+✔ SARIMAX fails under strong nonlinearity
